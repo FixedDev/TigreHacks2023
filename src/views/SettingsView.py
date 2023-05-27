@@ -10,17 +10,17 @@ navbar = AppBar(
         ]
     )
 
-# avatar = ft.CircleAvatar(foreground_image_url="https://avatars.githubusercontent.com/u/wilovy09?v=4",
+# avatar = ft.CircleAvatar(foreground_image_url="https://avatars.githubusercontent.com/u/68057133?v=4",
 #                          radius=100)
-avatar = ft.CircleAvatar(foreground_image_url="https://avatars.githubusercontent.com/u/68057133?v=4",
-                         radius=100)
+
+logout = TextButton("Logout",on_click=lambda e: e.page.go('/login'))
 
 def _view_():
     return View(
         '/settings',
         controls=[
             navbar,
-            avatar,
-            Text('Settings Page')
+            Text('Settings Page'),
+            logout
         ],horizontal_alignment='center'
     )
