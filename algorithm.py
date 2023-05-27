@@ -3,6 +3,8 @@ import random
 import csv
 import numpy as np
 import folium
+from folium import Polygon
+from geopandas import *
 
 class Point:
     def __init__(self, latitude: float, longitude: float):
@@ -11,6 +13,10 @@ class Point:
 
     def __ge__(self, other):
         return other.longitude > self.longitude and other.latitude > self.latitude
+
+    # scalar product
+    def __mul__(self, other):
+        return other.longitude * self.longitude + other.latitude * self.latitude
 
     def __eq__(self, other):
         return other.longitude == self.longitude and other.longitude == self.longitude
@@ -23,7 +29,8 @@ class Point:
         dlat = math.radians(other.latitude - self.latitude)
         dlon = math.radians(other.longitude - self.longitude)
 
-        a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(self.latitude)) * math.cos(math.radians(other.latitude)) * math.sin(
+        a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(self.latitude)) * math.cos(
+            math.radians(other.latitude)) * math.sin(
             dlon / 2) ** 2
 
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
@@ -44,6 +51,46 @@ class RectangularShape(Shape):
 
     def is_in(self, point: Point):
         return self.point1 >= point >= self.point2
+
+
+class PolygonalShape(Shape):
+    def __init__(self, points: list[Point]):
+        self.points = points
+
+    def fix(self):
+        rectangle_polygon_geometry = self.asPolygon()
+
+        for i in range(0, len(rectangle_polygon_geometry.get_bounds()) - 1):
+            self.points[i] = Point(rectangle_polygon_geometry.get_bounds()[i][0],
+                                   rectangle_polygon_geometry.get_bounds()[i][1])
+
+    def asPolygon(self):
+        points = [(point.latitude, point.longitude) for point in self.points]
+        points.append((self.points[0].latitude, self.points[0].longitude))
+
+        return Polygon(points)
+
+    def is_in(self, point: Point):
+        sides = len(self.points)
+        j = sides - 1
+        point_status = False
+
+        for i in range(0, sides):
+            if self.points[i].latitude < point.latitude <= self.points[j].latitude or \
+                    self.points[j].latitude < point.latitude <= self.points[i].latitude:
+                if self.points[i].longitude + (point.latitude - self.points[i].latitude) / (
+                        self.points[j].latitude - self.points[i].latitude) * (
+                        self.points[j].longitude - self.points[i].longitude) < point.longitude:
+                    point_status = not point_status
+
+            j = i
+
+        return point_status
+
+
+class FourPRectangularShape(PolygonalShape):
+    def __init__(self, points: list[Point]):
+        super().__init__(points)
 
 
 def calculate_distance(lat1, lon1, lat2, lon2):
@@ -118,7 +165,7 @@ existing_coordinates = read_existing_coordinates(csv_file_path)
 
 # Generate new coordinates
 num_points = 1000
-min_distance = 1  # Minimum distance in kilometers
+min_distance = .5  # Minimum distance in kilometers
 new_coordinates = generate_new_coordinates(existing_coordinates, num_points, min_distance)
 
 # Create a map centered on Monterrey
@@ -140,7 +187,8 @@ new_coordinates_map = folium.Map(location=[25.6866, -100.3161], zoom_start=12)
 
 # Add new coordinates to the map
 for coord in new_coordinates:
-    folium.Marker(location=[coord.latitude, coord.longitude], icon=folium.Icon(color='green')).add_to(new_coordinates_map)
+    folium.Marker(location=[coord.latitude, coord.longitude], icon=folium.Icon(color='green')).add_to(
+        new_coordinates_map)
 
 # Save the map with new coordinates as an HTML file
 new_coordinates_map.save('new_coordinates_map.html')
