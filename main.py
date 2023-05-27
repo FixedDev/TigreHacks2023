@@ -39,4 +39,4 @@ def main(page:Page):
     
     page.update()
     
-ft.app(target=main)
+ft.app(target=main, assets_dir='assets')
