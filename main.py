@@ -3,9 +3,12 @@ from flet import *
 from src.views.LoginPageView import _view_ as LoginPage
 from src.views.SingUpView import _view_ as SingUpPage
 from src.views.IndexView import _view_ as IndexPage
+from src.views.SettingsView import _view_ as SettingsPage
 
+# el precio del PET ronda entre los $4.50 y los $5
 def main(page:Page):
     page.theme_mode = "dark"
+    page.title = "EcoBalance"
 
     def route_change(route):
         page.views.clear()
@@ -15,6 +18,8 @@ def main(page:Page):
             page.views.append(SingUpPage())
         if page.route == '/index':
             page.views.append(IndexPage())
+        if page.route == '/settings':
+            page.views.append(SettingsPage())
         page.update()
     
     def view_pop(view):
@@ -26,6 +31,7 @@ def main(page:Page):
     page.on_view_pop = view_pop
     page.go(page.route)
 
+    page.views.append(SettingsPage())
     page.views.append(IndexPage())
     page.views.append(SingUpPage())
     page.views.append(LoginPage())

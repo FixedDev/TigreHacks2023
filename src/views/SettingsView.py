@@ -12,9 +12,9 @@ navbar = AppBar(
 
 def _view_():
     return View(
-        '/index',
+        '/settings',
         controls=[
             navbar,
-            Text('Index Page')
+            Text('Settings Page')
         ],
     )

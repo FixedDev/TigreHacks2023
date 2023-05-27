@@ -13,15 +13,18 @@ def _view_():
         print("Username:", entered_user_name)
         print("Password:", entered_password)
 
-
-    singupBTN = ElevatedButton("Si no tienes cuenta, registrate aqui", on_click=lambda e: e.page.go('/singup'))
-    user_name = TextField(label='Username', value='')
+    singupBTN = ElevatedButton("Si no tienes cuenta, registrate aqui",
+                               on_click=lambda e: e.page.go('/singup'),
+                               bgcolor=colors.TRANSPARENT,
+                               color=colors.WHITE)
+    user_name = TextField(label='Username', value='', autofocus=True)
     password = TextField(label='Password', value='')
-    loginBTN = ElevatedButton("Login", on_click=lambda e: login_handler(e, user_name.value, password.value))
+    loginBTN = ElevatedButton("Login",
+                              on_click=lambda e: login_handler(e, user_name.value, password.value))
 
     def login_handler(e, user_name, password):
-        print("Username:", user_name)
-        print("Password:", password)
+        print("Username login:", user_name)
+        print("Password login:", password)
         e.page.go('/index')
 
     return View(
@@ -31,5 +34,7 @@ def _view_():
             user_name,
             password,
             loginBTN,
-        ],horizontal_alignment='center',
+        ],
+        horizontal_alignment='center',
+        vertical_alignment='center'
     )
