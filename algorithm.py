@@ -4,16 +4,30 @@ import csv
 import numpy as np
 import folium
 
-
 class Point:
     def __init__(self, longitude: int, latitude: int):
         self.longitude = longitude
         self.latitude = latitude
 
+    def __ge__(self, other):
+        return other.longitude > self.longitude and other.latitude > self.latitude
+
+    def __eq__(self, other):
+        return other.longitude == self.longitude and other.longitude == self.longitude
+
 
 class Shape:
     def is_in(self, point: Point):
         pass
+
+
+class RectangularShape(Shape):
+    def __init__(self, point1: Point, point2: Point):
+        self.point1 = point1 if point1 > point2 else point2
+        self.point2 = point2 if self.point1 == point1 else point1
+
+    def is_in(self, point: Point):
+        return self.point1 >= point >= self.point2
 
 
 def calculate_distance(lat1, lon1, lat2, lon2):
