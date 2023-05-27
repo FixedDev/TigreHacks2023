@@ -3,20 +3,25 @@ import flet as ft
 from flet import *
 
 def _view_():
-    phoneNumber = TextField(label='Phone number', value='')
+    phoneNumber = TextField(label='Phone number', value='', )
     password = TextField(label='Password', value='')
-    singupBTN = ElevatedButton("Sing Up", on_click=lambda e: singup_handler(e, phoneNumber.value, password.value))
-
+    verificationBTN = ElevatedButton("Sing Up", on_click=lambda e: singup_handler(e, phoneNumber.value, password.value))
+    
     def singup_handler(e, phoneNumber, password):
-        print("Username SingUp:", phoneNumber)
-        print("Password SingUp:", password)
-        e.page.go('/login')
+        if phoneNumber == '' or password == '':
+            print('Ingrese datos!!!')
+        else:
+            print("Number SingUp:", phoneNumber)
+            print("Password SingUp:", password)
+            e.page.go('/verification')
 
     return View(
         '/singup',
         controls=[
             phoneNumber,
             password,
-            singupBTN,
+            verificationBTN,
         ],
+        horizontal_alignment='center',
+        vertical_alignment='center'
     )
