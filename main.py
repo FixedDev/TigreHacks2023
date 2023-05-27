@@ -5,7 +5,6 @@ from src.views.SingUpView import _view_ as SingUpPage
 from src.views.IndexView import _view_ as IndexPage
 
 def main(page:Page):
-    print("Welcome to TigreHacks 2023")
     page.theme_mode = "dark"
 
     def route_change(route):
@@ -33,5 +32,4 @@ def main(page:Page):
     
     page.update()
     
-
 ft.app(target=main)
