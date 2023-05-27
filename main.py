@@ -8,6 +8,7 @@ from src.views.SettingsView import _view_ as SettingsPage
 # el precio del PET ronda entre los $4.50 y los $5
 def main(page:Page):
     page.theme_mode = "dark"
+    page.scroll = True
     page.title = "EcoBalance"
 
     def route_change(route):
