@@ -4,8 +4,9 @@ import csv
 import numpy as np
 import folium
 
+
 class Point:
-    def __init__(self, longitude: int, latitude: int):
+    def __init__(self, longitude: float, latitude: float):
         self.longitude = longitude
         self.latitude = latitude
 
@@ -61,12 +62,13 @@ def generate_new_coordinates(existing_coordinates, num_points, min_distance):
     """
     Generate new coordinates near existing coordinates, satisfying the minimum distance constraint.
     """
-    lat_min, lat_max = 25.5700, 25.8700
-    lon_min, lon_max = -100.5200, -100.1000
+    min_point = Point(latitude=25.5700, longitude=-100.5200)
+    max_point = Point(latitude=25.8700, longitude=-100.100)
 
     # Create a grid of points within the specified range
-    lat_grid = np.linspace(lat_min, lat_max, num=100)
-    lon_grid = np.linspace(lon_min, lon_max, num=100)
+    lat_grid = np.linspace(min_point.latitude, max_point.latitude, num=100)
+    lon_grid = np.linspace(min_point.longitude, max_point.longitude, num=100)
+
     grid_points = [(lat, lon) for lat in lat_grid for lon in lon_grid]
 
     new_coordinates = []
