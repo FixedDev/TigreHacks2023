@@ -179,8 +179,6 @@ for coord in existing_coordinates:
 for coord in new_coordinates:
     folium.Marker(location=[coord.latitude, coord.longitude], icon=folium.Icon(color='green')).add_to(monterrey_map)
 
-rectangle.asPolygon().add_to(monterrey_map)
-
 # Save the map as an HTML file
 monterrey_map.save('monterrey_coordinates_map.html')
 
