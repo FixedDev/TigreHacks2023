@@ -100,7 +100,7 @@ csv_file_path = 'coordinates.csv'
 existing_coordinates = read_existing_coordinates(csv_file_path)
 
 # Generate new coordinates
-num_points = 100
+num_points = 10000
 min_distance = 0.5  # Minimum distance in kilometers
 new_coordinates = generate_new_coordinates(existing_coordinates, num_points, min_distance)
 
@@ -117,3 +117,13 @@ for coord in new_coordinates:
 
 # Save the map as an HTML file
 monterrey_map.save('monterrey_coordinates_map.html')
+
+# Create a map for the new coordinates only
+new_coordinates_map = folium.Map(location=[25.6866, -100.3161], zoom_start=12)
+
+# Add new coordinates to the map
+for coord in new_coordinates:
+    folium.Marker(location=[coord[0], coord[1]], icon=folium.Icon(color='green')).add_to(new_coordinates_map)
+
+# Save the map with new coordinates as an HTML file
+new_coordinates_map.save('new_coordinates_map.html')
