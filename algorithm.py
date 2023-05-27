@@ -4,7 +4,6 @@ import csv
 import numpy as np
 import folium
 
-
 class Point:
     def __init__(self, latitude: float, longitude: float):
         self.longitude = longitude
