@@ -6,7 +6,6 @@ from src.views.IndexView import _view_ as IndexPage
 
 def main(page:Page):
     print("Welcome to TigreHacks 2023")
-    page.horizontal_alignment = "center"
     page.theme_mode = "dark"
 
     def route_change(route):
