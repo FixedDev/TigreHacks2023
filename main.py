@@ -6,6 +6,7 @@ from src.views.IndexView import _view_ as IndexPage
 from src.views.SettingsView import _view_ as SettingsPage
 
 # el precio del PET ronda entre los $4.50 y los $5
+# que otros materiales se pueden reciclar
 def main(page:Page):
     page.theme_mode = "dark"
     page.scroll = True
