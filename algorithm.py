@@ -4,6 +4,18 @@ import csv
 import numpy as np
 import folium
 
+
+class Point:
+    def __init__(self, longitude: int, latitude: int):
+        self.longitude = longitude
+        self.latitude = latitude
+
+
+class Shape:
+    def is_in(self, point: Point):
+        pass
+
+
 def calculate_distance(lat1, lon1, lat2, lon2):
     """
     Calculate the distance between two coordinates using the Haversine formula.
@@ -15,6 +27,7 @@ def calculate_distance(lat1, lon1, lat2, lon2):
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     distance = radius * c
     return distance
+
 
 def read_existing_coordinates(file_path):
     """
@@ -28,6 +41,7 @@ def read_existing_coordinates(file_path):
             lat, lon = map(float, row)
             existing_coordinates.append((lat, lon))
     return existing_coordinates
+
 
 def generate_new_coordinates(existing_coordinates, num_points, min_distance):
     """
@@ -63,6 +77,7 @@ def generate_new_coordinates(existing_coordinates, num_points, min_distance):
             existing_coordinates.append((lat, lon))  # Update existing coordinates with new ones
 
     return new_coordinates
+
 
 # File path for the CSV with existing coordinates
 csv_file_path = 'coordinates.csv'
