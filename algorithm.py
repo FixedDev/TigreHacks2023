@@ -6,7 +6,6 @@ import folium
 from folium import Polygon
 from geopandas import *
 
-
 class Point:
     def __init__(self, latitude: float, longitude: float):
         self.longitude = longitude
