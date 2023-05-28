@@ -1,3 +1,4 @@
+import logging
 from enum import Enum
 
 import pymongo
@@ -10,12 +11,19 @@ from src.models.User import User
 class LoginResult(Enum):
     SUCCESS = 1,
     WRONG_PASSWORD = 2,
-    INVALID_USER = 3,
+    USER_NOT_EXISTS = 3,
     ERROR = 4
 
 
 def checkIfValid(password, user):
     return checkpw(password, user.passwd_hash)
+
+
+def hash_password(password):
+    salt = gensalt()
+    hashed_passwd = hashpw(password, salt)
+
+    return salt, hashed_passwd
 
 
 class LoginController:
@@ -33,13 +41,14 @@ class LoginController:
             document = self.db_access_object.find_one(filter={"mobile_number": mobile_number})
 
             if document is None:
-                return LoginResult.INVALID_USER
+                return LoginResult.USER_NOT_EXISTS
 
             user = User(document)
 
-            return LoginResult.SUCCESS if checkIfValid(password, User()) else LoginResult.WRONG_PASSWORD
-        except Exception:
-            print("a")
+            return LoginResult.SUCCESS if checkIfValid(password, user) else LoginResult.WRONG_PASSWORD
+        except Exception as e:
+            logging.exception(e)
+            return LoginResult.ERROR
 
     # db_access_object.search({name: user_name}).then(__check_if_valid)
     # si es valido, devolver un SUCCESS, si el usuario no se encuentra, INVALID_USER
@@ -47,16 +56,11 @@ class LoginController:
     # cualquier otro caso devolver ERROR
 
 
-def __hash_password(password):
-    salt = gensalt()
-    hashed_passwd = hashpw(password, salt)
-
-    return salt, hashed_passwd
-
-
 if __name__ == '__main__':
     with open("db.json", mode='r') as file_handle:
         connection_data = JsonConnectionData(file_handle)
         connection = MongoConnectionHandle(data=connection_data)
-        controller = LoginController(connection.connection().get_database("dbtest").get_collection("users"), hashpw)
+        controller = LoginController(connection.connection().get_database("dbtest").get_collection("users"),
+                                     hash_password)
         print(controller.user_exists("8113470034"))
+        print(controller.login("8113470034", "20514920"))
