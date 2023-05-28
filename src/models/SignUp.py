@@ -1,11 +1,9 @@
 import logging
 from enum import Enum
 
-import pymongo
-
-from src.controllers.LoginController import hash_password
-from src.controllers.db.DatabaseAccessController import MongoConnectionHandle, JsonConnectionData
-from src.controllers.db.UserAccessObject import UserAccessObject
+from src.models.Login import hash_password
+from src.models.db.DatabaseAccessController import MongoConnectionHandle, JsonConnectionData
+from src.models.db.UserAccessObject import UserAccessObject
 from src.models.User import User
 
 
