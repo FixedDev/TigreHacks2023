@@ -4,6 +4,14 @@ console.log("Ok!!!");
 // LoginResult.WRONG_PASSWORD
 // LoginResult.USER_NOT_EXIST
 // LoginResult.ERROR
+
+// post a /internal_register
+// {
+//   "result": "RegisterResult.SUCCESS",
+//   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NzMyZjgzNzhjODE3ODMyM2MzZmJmMCJ9.LkrTHrq3F8n7OrYVOB5pnUd7wbcoW2lddg57YZHom70"
+// }
+// en success devuelve eso
+//
 function senddata() {
     let input_number = document.getElementById("input_number").value;
     let input_password = document.getElementById("input_password").value;
