@@ -23,7 +23,7 @@ def validateNumber(number: str) -> bool:
     return len(number) >= 10
 
 
-class SignUpController:
+class SignupHandler:
     db_access_object: UserAccessObject
 
     def __init__(self, db_access_object: UserAccessObject, password_hash_algor):
@@ -59,6 +59,6 @@ if __name__ == '__main__':
         connection_data = JsonConnectionData(file_handle)
         connection = MongoConnectionHandle(data=connection_data)
         user_access = UserAccessObject(connection.connection().get_database("dbtest").get_collection("users"))
-        controller = SignUpController(user_access, hash_password)
+        controller = SignupHandler(user_access, hash_password)
 
         print(controller.registerUser("8113470034", "20514920"))
