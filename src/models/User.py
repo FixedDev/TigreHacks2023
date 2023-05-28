@@ -1,7 +1,5 @@
 class User:
-	def __init__(self, user_name):
-		self.hash = None
-		self.name = user_name
-
-	def set_passwd_hash(self, passwd_hash):
-		self.hash = passwd_hash
+    def __init__(self, mobile_number):
+        self.__mobile_number = mobile_number
+        self.credit = None
+        self.passwd_hash = None
