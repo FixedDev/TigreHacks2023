@@ -6,6 +6,7 @@ import folium
 from folium import Polygon
 from geopandas import *
 
+
 class Point:
     def __init__(self, latitude: float, longitude: float):
         self.longitude = longitude
@@ -23,8 +24,8 @@ class Point:
 
     def distance(self, other):
         """
-          Calculate the distance between two coordinates using the Haversine formula.
-          """
+        Calculate the distance between two coordinates using the Haversine formula.
+        """
         radius = 6371  # Radius of the Earth in kilometers
         dlat = math.radians(other.latitude - self.latitude)
         dlon = math.radians(other.longitude - self.longitude)
@@ -88,11 +89,6 @@ class PolygonalShape(Shape):
         return point_status
 
 
-class FourPRectangularShape(PolygonalShape):
-    def __init__(self, points: list[Point]):
-        super().__init__(points)
-
-
 def calculate_distance(lat1, lon1, lat2, lon2):
     """
     Calculate the distance between two coordinates using the Haversine formula.
@@ -120,9 +116,9 @@ def read_existing_coordinates(file_path):
     return existing_coordinates
 
 
-def generate_new_coordinates(existing_coordinates: list[Point], num_points, min_distance):
+def generate_new_coordinates(existing_coordinates: list[Point], num_points, min_distance, polygon_shape: Shape):
     """
-    Generate new coordinates near existing coordinates, satisfying the minimum distance constraint.
+    Generate new coordinates near existing coordinates, satisfying the minimum distance constraint and within the polygon shape.
     """
     min_point = Point(latitude=25.5700, longitude=-100.5200)
     max_point = Point(latitude=25.8700, longitude=-100.100)
@@ -143,10 +139,10 @@ def generate_new_coordinates(existing_coordinates: list[Point], num_points, min_
 
         is_valid = True
 
-        # Check if the new coordinate satisfies the minimum distance constraint
+        # Check if the new coordinate satisfies the minimum distance constraint and is within the polygon shape
         for coord in existing_coordinates:
             distance = point.distance(coord)
-            if distance < min_distance:
+            if distance < min_distance or not polygon_shape.is_in(point):
                 is_valid = False
                 break
 
@@ -163,10 +159,22 @@ csv_file_path = 'coordinates.csv'
 # Read existing coordinates from the CSV file
 existing_coordinates = read_existing_coordinates(csv_file_path)
 
-# Generate new coordinates
+# Define the vertices of the polygon that delimits the area
+polygon_vertices = [
+    Point(25.766208153153272, -100.43999454010485),
+    Point(25.635699380648006, -100.31497695176746),
+    Point(25.685473638951752, -100.23876307237285),
+    Point(25.743350522005148, -100.32698029875674),
+    Point(25.790365318994212, -100.38332270726161)
+]
+
+# Create a polygonal shape with the vertices
+polygon_shape = PolygonalShape(polygon_vertices)
+
+# Generate new coordinates within the polygonal shape
 num_points = 1000
-min_distance = .5  # Minimum distance in kilometers
-new_coordinates = generate_new_coordinates(existing_coordinates, num_points, min_distance)
+min_distance = 0.5  # Minimum distance in kilometers
+new_coordinates = generate_new_coordinates(existing_coordinates, num_points, min_distance, polygon_shape)
 
 # Create a map centered on Monterrey
 monterrey_map = folium.Map(location=[25.6866, -100.3161], zoom_start=12)
@@ -175,7 +183,7 @@ monterrey_map = folium.Map(location=[25.6866, -100.3161], zoom_start=12)
 for coord in existing_coordinates:
     folium.Marker(location=[coord.latitude, coord.longitude], icon=folium.Icon(color='blue')).add_to(monterrey_map)
 
-# Add new coordinates to the map
+# Add new coordinates within the polygon to the map
 for coord in new_coordinates:
     folium.Marker(location=[coord.latitude, coord.longitude], icon=folium.Icon(color='green')).add_to(monterrey_map)
 
@@ -185,7 +193,7 @@ monterrey_map.save('monterrey_coordinates_map.html')
 # Create a map for the new coordinates only
 new_coordinates_map = folium.Map(location=[25.6866, -100.3161], zoom_start=12)
 
-# Add new coordinates to the map
+# Add new coordinates within the polygon to the map
 for coord in new_coordinates:
     folium.Marker(location=[coord.latitude, coord.longitude], icon=folium.Icon(color='green')).add_to(
         new_coordinates_map)

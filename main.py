@@ -7,7 +7,8 @@ from src.views.SettingsView import _view_ as SettingsPage
 from src.views.VerificationView import _view_ as VerificationPage
 
 # el precio del PET ronda entre los $4.50 y los $5
-# que otros materiales se pueden reciclar
+# id grupo cognito:   us-east-1_IsVAzmCPD
+# arn:aws:cognito-idp:us-east-1:130278754658:userpool/us-east-1_IsVAzmCPD
 def main(page:Page):
     page.theme_mode = "dark"
     page.scroll = True
