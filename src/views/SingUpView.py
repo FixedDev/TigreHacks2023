@@ -1,13 +1,11 @@
 #SingUp View
 import flet as ft
 from flet import *
+phoneNumber = TextField(label='Phone number', value='', )
+password = TextField(label='Password', value='')
+verificationBTN = ElevatedButton("Sing Up", on_click=lambda e: singup_handler(e, phoneNumber.value, password.value))
 
-def _view_():
-    phoneNumber = TextField(label='Phone number', value='', )
-    password = TextField(label='Password', value='')
-    verificationBTN = ElevatedButton("Sing Up", on_click=lambda e: singup_handler(e, phoneNumber.value, password.value))
-
-    def singup_handler(e, phoneNumber, password):
+def singup_handler(e, phoneNumber, password):
         if phoneNumber == '' or password == '':
             print('Ingrese datos!!!')
         else:
@@ -15,6 +13,10 @@ def _view_():
             print("Password SingUp:", password)
             e.page.go('/verification')
     
+def get_phone_number():
+    return phoneNumber
+def _view_():
+
     return View(
         '/singup',
         controls=[
