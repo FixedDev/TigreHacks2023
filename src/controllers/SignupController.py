@@ -22,11 +22,12 @@ class SignupController:
         if not number or not password:
             return jsonify({"result": RegisterResult.ERROR})
 
+
         result, user = self.signup_management.registerUser(number, password)
 
-        if result == RegisterResult.SUCCESS:
-            token = jwt.encode({"id": str(user.id())},
-                               key=self.config['SECRET_KEY'])
-            return jsonify({"result": str(result), "token": token})
+if result == RegisterResult.SUCCESS:
+    token = jwt.encode({"id": str(user.id())},
+                       key=self.config['SECRET_KEY'])
+    return jsonify({"result": str(result), "token": token})
 
-        return jsonify({"result": str(result)})
+return jsonify({"result": str(result)})
