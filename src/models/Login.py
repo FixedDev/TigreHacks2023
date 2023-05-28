@@ -3,6 +3,7 @@ from enum import Enum
 
 from bcrypt import *
 
+from src.controllers.CORS import crossdomain
 from src.models.User import User
 from src.models.db.UserAccessObject import UserAccessObject
 
@@ -33,6 +34,7 @@ class LoginManagement:
     def user_exists(self, mobile_number):
         return self.db_access_object.searchByNumber(mobile_number) is not None
 
+    @crossdomain
     def login(self, mobile_number, password) -> (LoginResult, User):
         try:
             user = self.db_access_object.searchByNumber(mobile_number)
