@@ -13,15 +13,18 @@ console.log("Ok!!!");
 // en success devuelve eso
 //
 function senddata() {
-    let input_number = document.getElementById("input_number").value;
-    let input_password = document.getElementById("input_password").value;
-    const path = "http://127.0.0.1:5000/internal_login";
-    
-    fetch(path)
+  let input_number = document.getElementById("input_number").value;
+  let input_password = document.getElementById("input_password").value;
+  const path = "http://127.0.0.1:5000/internal_login";
+  
+  fetch(path)
     .then(res => res.json())
-    .then(res => console.log(res));
-    
-    console.log(input_number, input_password);
+    .then(res => {
+      let resultValue = res.result;
+      console.log("Valor de result:", resultValue);
+    });
+  
+  console.log(input_number, input_password);
 }
 
 function signup() {
