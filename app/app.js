@@ -7,7 +7,7 @@ console.log("Ok!!!");
 function senddata() {
     let input_number = document.getElementById("input_number").value;
     let input_password = document.getElementById("input_password").value;
-    const path = "http://127.0.0.1:5500/internal_login";
+    const path = "http://127.0.0.1:5000/internal_login";
     
     fetch(path)
     .then(res => res.json())

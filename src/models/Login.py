@@ -43,7 +43,7 @@ class LoginManagement:
             return (LoginResult.SUCCESS, user) if checkIfValid(password.encode("UTF-8"), user) else (LoginResult.WRONG_PASSWORD, None)
         except Exception as e:
             logging.exception(e)
-            return LoginResult.ERROR
+            return LoginResult.ERROR, None
 
     # db_access_object.search({name: user_name}).then(__check_if_valid)
     # si es valido, devolver un SUCCESS, si el usuario no se encuentra, INVALID_USER

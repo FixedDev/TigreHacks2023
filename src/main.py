@@ -6,6 +6,7 @@ from src.models.Login import LoginManagement, hash_password
 from src.models.SignUp import SignupHandler
 from src.models.db.DatabaseAccessController import MongoConnectionHandle, JsonConnectionData
 from src.models.db.UserAccessObject import UserAccessObject
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'test3'
@@ -20,7 +21,7 @@ with open("db.json", mode='r') as file_handle:
     login = LoginController(login_controller, app.config)
     signup = SignupController(signup_controller, app.config)
 
-    app.add_url_rule("/internal_login", view_func=login.route, methods=["POST"])
-    app.add_url_rule("/internal_register", view_func=signup.route, methods=["POST"])
+    app.add_url_rule("/internal_login", view_func=login.login, methods=["POST"])
+    app.add_url_rule("/internal_register", view_func=signup.signup, methods=["POST"])
 
     app.run(debug=True)

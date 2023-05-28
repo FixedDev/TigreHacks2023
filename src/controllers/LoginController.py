@@ -11,7 +11,7 @@ class LoginController:
         self.login_management = login
         self.config = config
 
-    def route(self):
+    def login(self):
         number = request.form.get("mobile_number")
         password = request.form.get("password")
 

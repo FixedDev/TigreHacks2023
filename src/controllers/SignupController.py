@@ -3,6 +3,7 @@ from flask import *
 
 from src.models import Login, SignUp
 from src.models.Login import LoginResult
+from src.models.SignUp import RegisterResult
 
 
 class SignupController:
@@ -11,7 +12,7 @@ class SignupController:
         self.signup_management = signup
         self.config = config
 
-    def route(self):
+    def signup(self):
         number = request.form.get("mobile_number")
         password = request.form.get("password")
 

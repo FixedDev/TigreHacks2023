@@ -35,23 +35,23 @@ class SignupHandler:
             document = self.db_access_object.searchByNumber(mobile_phone)
 
             if document is not None:
-                return RegisterResult.ALREADY_EXISTS
+                return RegisterResult.ALREADY_EXISTS, document
 
             if not validateNumber(mobile_phone):
-                return RegisterResult.INVALID_PHONE
+                return RegisterResult.INVALID_PHONE, document
 
             if not validatePassword(password):
-                return RegisterResult.INVALID_PASSWORD
+                return RegisterResult.INVALID_PASSWORD, document
 
             user = User(mobile_number=mobile_phone)
             (user.passwd_salt, user.passwd_hash) = self.password_hash_algor(password.encode("UTF-8"))
 
-            self.db_access_object.insert(user.forDb())
+            self.db_access_object.insert(user)
 
-            return RegisterResult.SUCCESS
+            return RegisterResult.SUCCESS, user
         except Exception as e:
             logging.exception(e)
-            return RegisterResult.ERROR
+            return RegisterResult.ERROR, None
 
 
 if __name__ == '__main__':
