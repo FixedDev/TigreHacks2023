@@ -5,6 +5,8 @@ import numpy as np
 import folium
 from folium import Polygon
 from geopandas import *
+import numpy as np
+from timeit import timeit
 
 
 class Point:
@@ -89,17 +91,17 @@ class PolygonalShape(Shape):
         return point_status
 
 
-def calculate_distance(lat1, lon1, lat2, lon2):
+def calculate_distance_numpy(lat1, lon1, lat2, lon2):
     """
     Calculate the distance between two coordinates using the Haversine formula.
     """
     radius = 6371  # Radius of the Earth in kilometers
-    dlat = math.radians(lat2 - lat1)
-    dlon = math.radians(lon2 - lon1)
-    a = math.sin(dlat / 2) ** 2 + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlon / 2) ** 2
-    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    distance = radius * c
-    return distance
+    lat1, lon1 = np.radians(lat1), np.radians(lon1)
+    lat2, lon2 = np.radians(lat2), np.radians(lon2)
+
+    a = np.sin((lat2 - lat1) / 2) ** 2 + np.cos(lat1) * np.cos(lat2) * np.sin((lon2 - lon1) / 2) ** 2
+    c = 2 * np.arctan2(np.sqrt(a), np.sqrt(1 - a))
+    return radius * c
 
 
 def read_existing_coordinates(file_path):
