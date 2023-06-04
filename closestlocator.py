@@ -1,5 +1,6 @@
 import csv
 import math
+import numpy as np
 
 
 def calculate_distance(coord1, coord2):
@@ -9,15 +10,7 @@ def calculate_distance(coord1, coord2):
 
 
 def find_closest_coordinate(target_coord, coordinate_list):
-    closest_coord = None
-    closest_distance = float('inf')
-
-    for coord in coordinate_list:
-        distance = calculate_distance(target_coord, coord)
-        if distance < closest_distance:
-            closest_coord = coord
-            closest_distance = distance
-
+    closest_coord = np.min(coordinate_list, key=calculate_distance)
     return closest_coord
 
 
@@ -27,7 +20,7 @@ target_coord = (25.718450347161042, -100.31411141412518)  # Replace with your ta
 with open('output.csv', 'r') as file:
     reader = csv.reader(file)
     next(reader)  # Skip the header row
-    coordinate_list = [tuple(map(float, row)) for row in reader]
+    coordinate_list = np.array([tuple(map(float, row)) for row in reader])
 
 closest_coordinate = find_closest_coordinate(target_coord, coordinate_list)
 print("Closest coordinate:", closest_coordinate)
